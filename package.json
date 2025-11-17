@@ -1,0 +1,18 @@
+{
+  "name": "playwright-e2e-js",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright E2E tests for OrangeHRM demo using Page Object Model (JavaScript).",
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test-ui": "playwright test --ui",
+    "test:smoke": "playwright test --grep '@smoke'",
+    "test:regression": "playwright test --grep '@regression'",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "dotenv": "^16.4.5"
+  }
+}
