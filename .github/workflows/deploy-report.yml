@@ -3,24 +3,41 @@ name: Deploy Playwright Report
 on:
   workflow_run:
     workflows: ["Playwright Tests"]
-    types:
-      - completed
+    types: [completed]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
+
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Download artifact
-        uses: actions/download-artifact@v4
+        uses: dawidd6/action-download-artifact@v3
         with:
           name: playwright-report
+          path: playwright-report
+          run_id: ${{ github.event.workflow_run.id }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Unzip report
-        run: mkdir public && cp -r playwright-report/* public/
+      - name: Prepare public folder
+        run: |
+          mkdir -p public
+          cp -r playwright-report/* public/ || true
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
+          publish_branch: gh-pages
+          force_orphan: true
