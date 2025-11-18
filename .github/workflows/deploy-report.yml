@@ -15,12 +15,16 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: playwright-report
+          path: downloaded-report   
 
-      - name: Unzip report
-        run: mkdir public && cp -r playwright-report/* public/
+      - name: Prepare report
+        run: |
+          mkdir -p public
+          mv downloaded-report/* public/   # public/ klasörüne taşı
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
+          publish_branch: gh-pages   
