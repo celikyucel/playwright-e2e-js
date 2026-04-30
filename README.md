@@ -1,4 +1,4 @@
-# Playwright E2E JS – OrangeHRM Demo (POM)
+# Playwright E2E JS
 
 This repository contains a **Playwright End-to-End test suite** for the public OrangeHRM demo application, built in **JavaScript** using a **Page Object Model (POM)** structure.
 
